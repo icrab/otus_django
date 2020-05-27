@@ -16,7 +16,8 @@ class LessonAdmin(admin.ModelAdmin):
             return f'{obj.text[:42]}...'
         return f'{obj.text}'
 
-    list_display = 'id', 'title', 'text_short', 'teacher', 'ts_created', 'ts_last_changed'
+    list_display = 'id', 'title', 'text_short', \
+                   'teacher', 'ts_created', 'ts_last_changed'
 
 
 @admin.register(Teacher)
@@ -29,5 +30,3 @@ class TeacherAdmin(admin.ModelAdmin):
 class StudentAdmin(admin.ModelAdmin):
     list_display = 'id', 'first_name', 'last_name'
     list_display_links = 'id', 'first_name'
-
-

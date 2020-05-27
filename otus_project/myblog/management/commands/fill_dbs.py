@@ -2,7 +2,7 @@ from faker import Faker
 from django.core.management import BaseCommand
 import factory
 from factory.django import DjangoModelFactory
-from myblog.models import Course, User, Teacher, Student, Lesson
+from myblog.models import Course, Teacher, Student, Lesson
 
 fake = Faker()
 
@@ -75,7 +75,11 @@ def create_all():
 
     all_teachers = Teacher.objects.all()
     teachers_iterator = factory.Iterator(all_teachers)
-    lessons = LessonFactory.create_batch(6, course=courses_iterator, teacher=teachers_iterator)
+    lessons = LessonFactory.create_batch(
+                                        6,
+                                        course=courses_iterator,
+                                        teacher=teachers_iterator
+    )
 
 
 class Command(BaseCommand):
