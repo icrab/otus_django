@@ -1,0 +1,14 @@
+{% extends 'myblog/base.html' %}
+{% block title %}
+<title>Create Course</title>
+{% endblock %}
+{% block body %}
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update</button>
+</form>
+<form action="{% url 'myblog:delete_course' pk=course.pk %}">
+    <button type="submit">Remove</button>
+</form>
+{% endblock %}

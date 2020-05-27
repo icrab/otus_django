@@ -26,7 +26,7 @@ class CourseFactory(DjangoModelFactory):
 
 class UserFactory(DjangoModelFactory):
     first_name = factory.Faker('first_name')
-    first_name = factory.Faker('name')
+    last_name = factory.Faker('last_name')
     email = factory.Faker('email')
     city = factory.Faker('city')
 

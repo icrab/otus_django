@@ -9,6 +9,9 @@ class Course(models.Model):
     cost = models.IntegerField()
     max_students = models.IntegerField()
 
+    def __str__(self):
+        return self.title
+
 
 class User(models.Model):
     class Meta:
@@ -19,7 +22,7 @@ class User(models.Model):
     email = models.EmailField()
     city = models.CharField(max_length=50)
 
-    course = models.ForeignKey(Course, on_delete=models.PROTECT)
+    course = models.ForeignKey(Course, null=True, on_delete=models.SET_NULL)
 
     @property
     def full_name(self):
@@ -50,8 +53,8 @@ class Lesson(models.Model):
     ts_created = models.DateTimeField(auto_now_add=True, null=True)
     ts_last_changed = models.DateTimeField(auto_now=True, null=True)
 
-    teacher = models.ForeignKey(Teacher, on_delete=models.PROTECT)
-    course = models.ForeignKey(Course, on_delete=models.PROTECT)
+    teacher = models.ForeignKey(Teacher, null=True, on_delete=models.SET_NULL)
+    course = models.ForeignKey(Course, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.title} : {self.text}'

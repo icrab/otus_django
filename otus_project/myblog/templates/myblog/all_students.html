@@ -1,0 +1,13 @@
+{% extends 'myblog/base.html' %}
+{% block title %}
+<title>All Students</title>
+{% endblock %}
+{% block body %}
+    <h3>Students:</h3>
+    {% for student in students %}
+        <h5>Student {{ student.pk }}:</h5>
+        <div>{{ student.first_name }}</div>
+        <div>{{ student.last_name }}</div>
+        <div>{{ student.city }}</div>
+    {% endfor %}
+{% endblock %}
