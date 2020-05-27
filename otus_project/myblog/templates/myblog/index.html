@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+    {% for course in all_courses %}
+    <div>
+        <h3>{{ course.title }}</h3>
+        <div>Course cost: {{ course.cost }}</div>
+        <div>Course max students: {{ course.max_students }}</div>
+        <ul> Students:
+            {% for student in all_students %}
+                {% if student.course == course %}
+                <li>{{ student.first_name }} </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <ul> Teachers:
+            {% for teacher in all_teachers %}
+                {% if teacher.course == course %}
+                <li>{{ teacher.first_name }} </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <ul> Lessons:
+            {% for lesson in all_lessons %}
+                {% if lesson.course == course %}
+                <li>{{ lesson.title }} </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>
