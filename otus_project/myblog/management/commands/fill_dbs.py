@@ -70,13 +70,13 @@ def create_all():
     all_courses = Course.objects.all()
     courses_iterator = factory.Iterator(all_courses)
 
-    teachers = TeacherFactory.create_batch(6, course=courses_iterator)
-    students = StudentFactory.create_batch(6, course=courses_iterator)
+    teachers = TeacherFactory.create_batch(7, course=courses_iterator)
+    students = StudentFactory.create_batch(7, course=courses_iterator)
 
     all_teachers = Teacher.objects.all()
     teachers_iterator = factory.Iterator(all_teachers)
     lessons = LessonFactory.create_batch(
-                                        6,
+                                        7,
                                         course=courses_iterator,
                                         teacher=teachers_iterator
     )
