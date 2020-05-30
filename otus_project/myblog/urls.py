@@ -1,14 +1,15 @@
 from django.urls import path
-from .views import CreateStudentView, PrintAllCourses, StudentDetailView, \
-    PrintAllStudents, StudentsListView, DeleteStudentView, UpdateStudentView, \
-    CreateCourseView, CourseDetailView, UpdateCourseView, DeleteCourseView
+from .views import CreateStudentView, AllCourses, StudentDetailView, \
+    AllStudents, DeleteStudentView, UpdateStudentView, \
+    CreateCourseView, CourseDetailView, UpdateCourseView, DeleteCourseView, \
+    ContactsView, SendAccessView
 
 app_name = 'myblog'
 
 urlpatterns = [
     path(
         '',
-        PrintAllCourses.as_view(template_name='myblog/all_courses.html'),
+        AllCourses.as_view(),
         name='all_courses'
     ),
     path(
@@ -33,7 +34,7 @@ urlpatterns = [
     ),
     path(
         'all_students/',
-        PrintAllStudents.as_view(template_name='myblog/all_students.html'),
+        AllStudents.as_view(),
         name='all_students'
     ),
     path(
@@ -57,8 +58,13 @@ urlpatterns = [
         name='delete_student'
     ),
     path(
-        'all_students_pagination/',
-        StudentsListView.as_view(),
-        name='all_students_pagination'
+        'contacts/',
+        ContactsView.as_view(),
+        name='contacts'
+    ),
+    path(
+        'send-success/',
+        SendAccessView.as_view(),
+        name='send-success',
     ),
 ]

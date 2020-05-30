@@ -1,11 +1,17 @@
-from django.views.generic import TemplateView, CreateView, DeleteView,\
-    UpdateView, DetailView
+from django.conf.urls import url
+from django.http import HttpResponseRedirect
+from django.views.generic import FormView, CreateView, DeleteView, UpdateView, DetailView, TemplateView
 from django.views.generic.list import ListView
+from django.urls import reverse, reverse_lazy
 
 from .models import Course, Teacher, Student, Lesson
+from .forms import ContactForm
+from otus_project.tasks import send_email
 
 
-class PrintAllCourses(TemplateView):
+class AllCourses(ListView):
+    model = Course
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         all_courses = Course.objects.all()
@@ -23,14 +29,9 @@ class PrintAllCourses(TemplateView):
         return context
 
 
-class PrintAllStudents(TemplateView):
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        all_students = Student.objects.all()
-
-        context.update({'students': all_students})
-
-        return context
+class AllStudents(ListView):
+    model = Student
+    context_object_name = 'students'
 
 
 class CreateStudentView(CreateView):
@@ -38,7 +39,8 @@ class CreateStudentView(CreateView):
     fields = '__all__'
 
     def get_success_url(self):
-        return f'/print_student/{self.object.pk}/'
+        student = (self.object.pk, )
+        return reverse('myblog:print_student', args=student)
 
 
 class StudentDetailView(DetailView):
@@ -51,12 +53,13 @@ class UpdateStudentView(UpdateView):
     template_name_suffix = '_update_form'
 
     def get_success_url(self):
-        return f'/print_student/{self.object.pk}/'
+        user = (self.object.pk, )
+        return reverse('myblog:print_student', args=user)
 
 
 class DeleteStudentView(DeleteView):
     model = Student
-    success_url = '/all_students/'
+    success_url = reverse_lazy('myblog:all_students')
 
 
 class CreateCourseView(CreateView):
@@ -64,7 +67,8 @@ class CreateCourseView(CreateView):
     fields = '__all__'
 
     def get_success_url(self):
-        return f'/print_course/{self.object.pk}'
+        course = (self.object.pk,)
+        return reverse('myblog:print_course', args=course)
 
 
 class CourseDetailView(DetailView):
@@ -77,15 +81,28 @@ class UpdateCourseView(UpdateView):
     template_name_suffix = '_update_form'
 
     def get_success_url(self):
-        return f'/print_course/{self.object.pk}'
+        course = (self.object.pk, )
+        return reverse('myblog:print_course', args=course)
 
 
 class DeleteCourseView(DeleteView):
     model = Course
-    success_url = '/'
+    success_url = reverse_lazy('myblog:all_courses')
 
 
-class StudentsListView(ListView):
-    model = Student
-    context_object_name = 'students'
-    paginate_by = 3
+class ContactsView(FormView):
+    template_name = 'myblog/contacts.html'
+    form_class = ContactForm
+
+    def form_valid(self, form):
+        form_data = form.cleaned_data
+        send_email.delay(form_data)
+
+        return HttpResponseRedirect(reverse_lazy('myblog:send-success'))
+
+
+
+class SendAccessView(TemplateView):
+    template_name = 'myblog/send-success.html'
+
+
