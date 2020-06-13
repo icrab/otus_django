@@ -1,7 +1,4 @@
 from django.db import models
-# from django.contrib.auth.models import AbstractUser
-# class Author(AbstractUser):
-#    pass
 
 
 class Course(models.Model):
@@ -41,15 +38,19 @@ class Student(User):
 
 
 class Lesson(models.Model):
+    DIFFICULTY_EASY = 1
+    DIFFICULTY_MEDIUM = 2
+    DIFFICULTY_HARD = 3
+
     DIFFICULTY = (
-        (1, 'Легкий'),
-        (2, 'Средний'),
-        (3, 'Сложный'),
+        (DIFFICULTY_EASY, 'Легкий'),
+        (DIFFICULTY_MEDIUM, 'Средний'),
+        (DIFFICULTY_HARD, 'Сложный'),
     )
 
     title = models.CharField(max_length=254)
     text = models.TextField()
-    difficulty = models.IntegerField(choices=DIFFICULTY)
+    difficulty = models.PositiveSmallIntegerField(choices=DIFFICULTY)
     ts_created = models.DateTimeField(auto_now_add=True, null=True)
     ts_last_changed = models.DateTimeField(auto_now=True, null=True)
 
