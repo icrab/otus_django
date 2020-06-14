@@ -1,4 +1,9 @@
 from logging.config import dictConfig
+from .base import BASE_DIR
+from pathlib import Path
+
+LOG_PATH = BASE_DIR + '/logs'
+Path(LOG_PATH).mkdir(parents=True, exist_ok=True)
 
 LOGGING = {
     'version': 1,
@@ -25,4 +30,6 @@ LOGGING = {
     }
 }
 
-logging_init = dictConfig(LOGGING)
+dictConfig(LOGGING)
+
+CELERYD_HIJACK_ROOT_LOGGER = False

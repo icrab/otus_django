@@ -1,13 +1,6 @@
 import os
-from .logging import logging_init
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-SECRET_KEY = '*b9*qnqg8kyx$ye5inwo^3b15%79zbv*+u)*l2c0%xwyj_to#%'
-
-# DEBUG = True
-
-ALLOWED_HOSTS = ['*']
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,13 +43,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'otus_project.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -83,13 +69,3 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-
-BROKER_URL = 'redis://127.0.0.1:6379/0'
-BROKER_TRANSPORT = 'redis'
-
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = 'app-messages'
-
-CELERYD_HIJACK_ROOT_LOGGER = False
-
-LOGGING_SETTINGS = logging_init
