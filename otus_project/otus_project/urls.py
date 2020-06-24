@@ -16,7 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myblog.urls', namespace='blog')),
+    path('contacts/', include('myblog_celery.urls')),
+    path('oauth/', include('myblog_oauth.urls')),
+    path('api-token/', include('myblog_api_token.urls')),
 ]

@@ -1,12 +1,8 @@
-from django.conf.urls import url
-from django.http import HttpResponseRedirect
-from django.views.generic import FormView, CreateView, DeleteView, UpdateView, DetailView, TemplateView
+from django.views.generic import CreateView, DeleteView, UpdateView, DetailView
 from django.views.generic.list import ListView
 from django.urls import reverse, reverse_lazy
 
 from .models import Course, Teacher, Student, Lesson
-from .forms import ContactForm
-from otus_project.tasks import send_email
 
 
 class AllCourses(ListView):
@@ -88,21 +84,5 @@ class UpdateCourseView(UpdateView):
 class DeleteCourseView(DeleteView):
     model = Course
     success_url = reverse_lazy('myblog:all_courses')
-
-
-class ContactsView(FormView):
-    template_name = 'myblog/contacts.html'
-    form_class = ContactForm
-
-    def form_valid(self, form):
-        form_data = form.cleaned_data
-        send_email.delay(form_data)
-
-        return HttpResponseRedirect(reverse_lazy('myblog:send-success'))
-
-
-
-class SendAccessView(TemplateView):
-    template_name = 'myblog/send-success.html'
 
 

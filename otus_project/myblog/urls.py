@@ -1,8 +1,7 @@
 from django.urls import path
 from .views import CreateStudentView, AllCourses, StudentDetailView, \
     AllStudents, DeleteStudentView, UpdateStudentView, \
-    CreateCourseView, CourseDetailView, UpdateCourseView, DeleteCourseView, \
-    ContactsView, SendAccessView
+    CreateCourseView, CourseDetailView, UpdateCourseView, DeleteCourseView
 
 app_name = 'myblog'
 
@@ -56,15 +55,5 @@ urlpatterns = [
         'delete_student/<int:pk>/',
         DeleteStudentView.as_view(),
         name='delete_student'
-    ),
-    path(
-        'contacts/',
-        ContactsView.as_view(),
-        name='contacts'
-    ),
-    path(
-        'send-success/',
-        SendAccessView.as_view(),
-        name='send-success',
     ),
 ]
