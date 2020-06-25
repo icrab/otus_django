@@ -13,7 +13,7 @@ from .views import (
 router = DefaultRouter()
 router.register('admin_student', StudentAdminViewSet, basename='admin_student')
 router.register('admin_teacher', TeacherAdminViewSet, basename='admin_teacher')
-router.register('admin_course', CourseAdminViewSet)
+router.register('admin_course', CourseAdminViewSet, basename='admin_course')
 router.register('student', StudentUserViewSet, basename='student')
 router.register('teacher', TeacherUserViewSet, basename='teacher')
 

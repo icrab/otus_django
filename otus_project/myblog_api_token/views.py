@@ -20,7 +20,7 @@ class BaseAdminViewSet(ModelViewSet):
     '''
     Childs of this class require admin permission
     '''
-    permission_classes = (IsAuthenticated, IsAdminUser)
+    permission_classes = (IsAdminUser, )
 
 
 class StudentAdminViewSet(BaseAdminViewSet):
@@ -38,23 +38,18 @@ class CourseAdminViewSet(BaseAdminViewSet):
     serializer_class = CourseSerializer
 
 
-class BaseUserViewSet(ViewSet):
-    permission_classes = (CustomDjangoModelPermissions,)
+class BaseUserViewSet(ModelViewSet):
+    '''
+    Childs of this class require django model permission
+    '''
+    permission_classes = (CustomDjangoModelPermissions, )
 
 
 class StudentUserViewSet(BaseUserViewSet):
-    queryset = Student.objects.none()
-
-    def list(self, request):
-        queryset = Student.objects.all()
-        serializer = StudentSerializer(queryset, many=True)
-        return Response(serializer.data)
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
 
 
 class TeacherUserViewSet(BaseUserViewSet):
-    queryset = Teacher.objects.none()
-
-    def list(self, request):
-        queryset = Teacher.objects.all()
-        serializer = StudentSerializer(queryset, many=True)
-        return Response(serializer.data)
+    queryset = Teacher.objects.all()
+    serializer_class = StudentSerializer
