@@ -5,6 +5,18 @@ SECRET_KEY = '*b9*qnqg8kyx$ye5inwo^3b15%79zbv*+u)*l2c0%xwyj_to#%'
 DEBUG = True
 ALLOWED_HOSTS = []
 
+INSTALLED_APPS += [
+                  'corsheaders',
+                  ]
+
+MIDDLEWARE += [
+              'corsheaders.middleware.CorsMiddleware',
+              'django.middleware.common.CommonMiddleware',
+              ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
