@@ -1,14 +1,8 @@
-from rest_framework.viewsets import ModelViewSet, ViewSet
-from rest_framework.response import Response
-from rest_framework.permissions import (
-                                        IsAuthenticated,
-                                        IsAdminUser,
-                                        AllowAny,
-                                        )
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from .permissions import CustomDjangoModelPermissions
+from rest_framework.permissions import AllowAny
 
 from myblog.models import Student, Teacher, Course
-from django.contrib.auth.models import User
 from .serializers import (
                           StudentSerializer,
                           TeacherSerializer,
@@ -16,40 +10,41 @@ from .serializers import (
                          )
 
 
-class BaseAdminViewSet(ModelViewSet):
+class BaseGuestViewSet(ReadOnlyModelViewSet):
     '''
-    Childs of this class require admin permission
+    Base class for guest users
     '''
-    permission_classes = (IsAdminUser, )
+    permission_classes = (AllowAny, )
 
 
-class StudentAdminViewSet(BaseAdminViewSet):
-    queryset = Student.objects.all()
-    serializer_class = StudentSerializer
-
-
-class TeacherAdminViewSet(BaseAdminViewSet):
+class TeacherGuestViewSet(BaseGuestViewSet):
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
 
 
-class CourseAdminViewSet(BaseAdminViewSet):
+class CourseGuestViewSet(BaseGuestViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
 
-class BaseUserViewSet(ModelViewSet):
+class BaseRegisteredViewSet(ModelViewSet):
     '''
-    Childs of this class require django model permission
+    Base class for registered users with django permissions
     '''
     permission_classes = (CustomDjangoModelPermissions, )
 
 
-class StudentUserViewSet(BaseUserViewSet):
+class StudentRegisteredViewSet(BaseRegisteredViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
 
-class TeacherUserViewSet(BaseUserViewSet):
+class TeacherRegisteredViewSet(BaseRegisteredViewSet):
     queryset = Teacher.objects.all()
-    serializer_class = StudentSerializer
+    serializer_class = TeacherSerializer
+
+
+class CourseRegisteredViewSet(BaseRegisteredViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
