@@ -23,3 +23,9 @@ urls:
 - <site_url>/contacts/ - отправка email
 - <site_url>/api-token/ - Token auth
 - <site_url>/oauth/ - Oauth2
+
+
+React:
+- <site_url>/all_students/ - управление курсами, 
+- <site_url>/login/ - админка
+ 

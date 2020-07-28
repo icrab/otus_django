@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'myblog',
     'myblog_celery',
     'myblog_oauth',
+    'frontend',
 ]
 
 MIDDLEWARE = [
@@ -74,3 +75,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+    ]

@@ -2,12 +2,11 @@
 {% block title %}
 <title>All Students</title>
 {% endblock %}
+{% block static %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"></link>
+{% endblock %}
 {% block body %}
-    <h3>Students:</h3>
-    {% for student in students %}
-        <h5>Student {{ student.pk }}:</h5>
-        <div>{{ student.first_name }}</div>
-        <div>{{ student.last_name }}</div>
-        <div>{{ student.city }}</div>
-    {% endfor %}
+<div id="root"></div>
+<script src="{% static 'frontend/index.js' %}"></script>
 {% endblock %}

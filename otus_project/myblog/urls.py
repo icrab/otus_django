@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import CreateStudentView, AllCourses, StudentDetailView, \
-    AllStudents, DeleteStudentView, UpdateStudentView, \
-    CreateCourseView, CourseDetailView, UpdateCourseView, DeleteCourseView
+from .views import all_students, login, \
+    CreateStudentView, AllCourses, StudentDetailView, \
+    DeleteStudentView, UpdateStudentView, CreateCourseView, \
+    CourseDetailView, UpdateCourseView, DeleteCourseView
 
 app_name = 'myblog'
 
@@ -32,8 +33,13 @@ urlpatterns = [
         name='delete_course'
     ),
     path(
+        'login/',
+        login,
+        name='login'
+    ),
+    path(
         'all_students/',
-        AllStudents.as_view(),
+        all_students,
         name='all_students'
     ),
     path(

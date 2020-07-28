@@ -5,6 +5,10 @@
     {% block title %}
     <title>Title</title>
     {% endblock %}
+    {% block static %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"></link>
+    {% endblock %}
 </head>
 <body>
 {% block body %}

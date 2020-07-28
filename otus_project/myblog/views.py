@@ -1,8 +1,17 @@
 from django.views.generic import CreateView, DeleteView, UpdateView, DetailView
 from django.views.generic.list import ListView
 from django.urls import reverse, reverse_lazy
+from django.shortcuts import render
 
 from .models import Course, Teacher, Student, Lesson
+
+
+def all_students(request):
+    return render(request, 'myblog/all_students.html')
+
+
+def login(request):
+    return render(request, 'myblog/login.html')
 
 
 class AllCourses(ListView):
@@ -23,11 +32,6 @@ class AllCourses(ListView):
         })
 
         return context
-
-
-class AllStudents(ListView):
-    model = Student
-    context_object_name = 'students'
 
 
 class CreateStudentView(CreateView):
