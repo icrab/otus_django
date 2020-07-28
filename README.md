@@ -26,6 +26,14 @@ urls:
 
 
 React:
+build:
+cd otus_project/frontend/login/
+npm run dev
+
+cd otus_project/frontend/students/
+npm run dev
+
+urls:
 - <site_url>/all_students/ - simple get data 
 - <site_url>/login/ - login, get data by token
  
