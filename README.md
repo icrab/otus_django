@@ -26,6 +26,6 @@ urls:
 
 
 React:
-- <site_url>/all_students/ - управление курсами, 
-- <site_url>/login/ - админка
+- <site_url>/all_students/ - simple get data 
+- <site_url>/login/ - login, get data by token
  
