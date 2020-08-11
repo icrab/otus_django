@@ -1,11 +1,12 @@
 {% extends 'myblog/base.html' %}
 {% block title %}
-<title>One Course</title>
+<title>Course</title>
+{% endblock %}
+{% block static %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"></link>
 {% endblock %}
 {% block body %}
-<h3>Course:</h3>
-<div> Title: {{ course.title }}</div>
-<div> Cost: {{ course.cost }}</div>
-<div> Max students: {{ course.max_students }}</div>
-<h4><a href="{% url 'myblog:all_courses' %} ">Main</a></h4>
+<div id="root"></div>
+<script src="{% static 'frontend/singleCourse.js' %}"></script>
 {% endblock %}

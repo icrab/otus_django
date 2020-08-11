@@ -3,15 +3,23 @@ from django.views.generic.list import ListView
 from django.urls import reverse, reverse_lazy
 from django.shortcuts import render
 
-from .models import Course, Teacher, Student, Lesson
+from .models import Course, Lesson, User
 
 
-def all_students(request):
-    return render(request, 'myblog/all_students.html')
+def all_courses(request):
+    return render(request, 'myblog/all_courses.html')
+
+
+def course_detail_view(request, pk):
+    return render(request, 'myblog/course_detail.html')
 
 
 def login(request):
     return render(request, 'myblog/login.html')
+
+
+def auth(request):
+    return render(request, 'myblog/auth.html')
 
 
 class AllCourses(ListView):
@@ -20,9 +28,6 @@ class AllCourses(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         all_courses = Course.objects.all()
-        all_teachers = Teacher.objects.all()
-        all_students = Student.objects.all()
-        all_lessons = Lesson.objects.all()
 
         context.update({
             'all_courses': all_courses,
@@ -35,7 +40,7 @@ class AllCourses(ListView):
 
 
 class CreateStudentView(CreateView):
-    model = Student
+    model = User
     fields = '__all__'
 
     def get_success_url(self):
@@ -43,12 +48,8 @@ class CreateStudentView(CreateView):
         return reverse('myblog:print_student', args=student)
 
 
-class StudentDetailView(DetailView):
-    model = Student
-
-
 class UpdateStudentView(UpdateView):
-    model = Student
+    model = User
     fields = '__all__'
     template_name_suffix = '_update_form'
 
@@ -58,7 +59,7 @@ class UpdateStudentView(UpdateView):
 
 
 class DeleteStudentView(DeleteView):
-    model = Student
+    model = User
     success_url = reverse_lazy('myblog:all_students')
 
 

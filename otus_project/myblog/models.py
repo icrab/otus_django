@@ -1,3 +1,6 @@
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.core.validators import MinLengthValidator
 from django.db import models
 
 
@@ -10,31 +13,37 @@ class Course(models.Model):
         return self.title
 
 
-class User(models.Model):
-    class Meta:
-        abstract = True
+class User(AbstractUser):
+    GROUP_STUDENT = 0
+    GROUP_TEACHER = 1
+    GROUP_ADMIN = 2
 
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField()
-    city = models.CharField(max_length=50)
+    GROUP = (
+        (GROUP_STUDENT, 'Студент'),
+        (GROUP_TEACHER, 'Учитель'),
+        (GROUP_ADMIN, 'Админ'),
+    )
 
-    course = models.ForeignKey(Course, null=True, on_delete=models.SET_NULL)
+    username = models.CharField(
+        max_length=150,
+        unique=True,
+        validators=(
+            UnicodeUsernameValidator,
+            MinLengthValidator(4)
+        )
+    )
 
-    @property
-    def full_name(self):
-        return f'{self.first_name} {self.last_name}'
+    password = models.CharField(
+        max_length=128,
+        validators=[MinLengthValidator(4)]
+    )
 
-    def __str__(self):
-        return self.full_name
+    email = models.EmailField(unique=True)
+    group = models.PositiveSmallIntegerField(choices=GROUP, default=GROUP_STUDENT)
+    courses = models.ManyToManyField(Course, related_name='users', blank=True)
 
-
-class Teacher(User):
-    pass
-
-
-class Student(User):
-    pass
+    EMAIL_FIELD = 'email'
+    USERNAME_FIELD = 'username'
 
 
 class Lesson(models.Model):
@@ -54,8 +63,9 @@ class Lesson(models.Model):
     ts_created = models.DateTimeField(auto_now_add=True, null=True)
     ts_last_changed = models.DateTimeField(auto_now=True, null=True)
 
-    teacher = models.ForeignKey(Teacher, null=True, on_delete=models.SET_NULL)
-    course = models.ForeignKey(Course, null=True, on_delete=models.SET_NULL)
+    course = models.ForeignKey(Course, null=True, related_name='lessons', on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.title} : {self.text}'
+
+

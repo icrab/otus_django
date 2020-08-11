@@ -21,6 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myblog.urls', namespace='blog')),
     path('contacts/', include('myblog_celery.urls')),
-    path('oauth/', include('myblog_oauth.urls')),
     path('api-token/', include('myblog_api_token.urls')),
+    path('accounts/', include('rest_registration.api.urls')),
 ]

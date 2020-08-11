@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --mode development ./src/login.js --output ../../static/frontend/login.js",
-    "build": "webpack --mode production ./src/login.js --output ../../static/frontend/login.js"
+    "dev": "webpack --mode development ./src/index.js --output ../../static/frontend/singleCourse.js",
+    "build": "webpack --mode production ./src/index.js --output ../../static/frontend/singleCourse.js"
   },
   "keywords": [],
   "author": "",
@@ -27,8 +27,7 @@
     "bootstrap": "^4.5.0",
     "react": "^16.13.1",
     "react-cookie": "^4.0.3",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "^5.2.0"
+    "react-dom": "^16.13.1"
   },
   "babel": {
     "presets": [

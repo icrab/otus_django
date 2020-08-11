@@ -15,8 +15,8 @@ INSTALLED_APPS = [
     'celery',
     'myblog',
     'myblog_celery',
-    'myblog_oauth',
     'frontend',
+    'rest_registration'
 ]
 
 MIDDLEWARE = [
@@ -30,6 +30,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'otus_project.urls'
+
+REST_REGISTRATION = {
+    'REGISTER_VERIFICATION_ENABLED': False,
+    'RESET_PASSWORD_VERIFICATION_ENABLED': False,
+    'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
+}
 
 TEMPLATES = [
     {
@@ -63,6 +69,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'myblog.User'
 
 LANGUAGE_CODE = 'en-us'
 

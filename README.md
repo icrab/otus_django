@@ -5,24 +5,15 @@
 - python manage.py migrate
 - python manage.py fill_dbs
 
-получаем проект с 3 курсами, 7 преподавателями, 7 учениками и 7 уроками
-
 создаем суперпользователя:
 - python manage.py createsuperuser
-
-устанавливаем redis, запускаем.
-запускаем celery:
-- celery -A otus_project worker
 
 запускаем:
 - python manage.py runserver
 
 urls:
-- <site_url>/ - управление курсами, 
 - <site_url>/admin/ - админка
-- <site_url>/contacts/ - отправка email
 - <site_url>/api-token/ - Token auth
-- <site_url>/oauth/ - Oauth2
 
 
 React:
@@ -30,10 +21,14 @@ build:
 cd otus_project/frontend/login/
 npm run dev
 
-cd otus_project/frontend/students/
+cd otus_project/frontend/courses/
+npm run dev
+
+cd otus_project/frontend/course/
 npm run dev
 
 urls:
-- <site_url>/all_students/ - simple get data 
 - <site_url>/login/ - login, get data by token
+- <site_url>/all_courses/ - all courses
+- <site_url>/print_course/pk/ - single course
  

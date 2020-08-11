@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import all_students, login, \
-    CreateStudentView, AllCourses, StudentDetailView, \
+from .views import all_courses, login, course_detail_view, auth, \
+    CreateStudentView, AllCourses, \
     DeleteStudentView, UpdateStudentView, CreateCourseView, \
     CourseDetailView, UpdateCourseView, DeleteCourseView
 
@@ -8,19 +8,14 @@ app_name = 'myblog'
 
 urlpatterns = [
     path(
-        '',
-        AllCourses.as_view(),
+        'all_courses/',
+        all_courses,
         name='all_courses'
     ),
     path(
         'create_course/',
         CreateCourseView.as_view(),
         name='create_course'
-    ),
-    path(
-        'print_course/<int:pk>/',
-        CourseDetailView.as_view(),
-        name='print_course'
     ),
     path(
         'update_course/<int:pk>/',
@@ -38,9 +33,9 @@ urlpatterns = [
         name='login'
     ),
     path(
-        'all_students/',
-        all_students,
-        name='all_students'
+        'auth/',
+        auth,
+        name='auth'
     ),
     path(
         'create_student/',
@@ -48,9 +43,9 @@ urlpatterns = [
         name='create_student'
     ),
     path(
-        'print_student/<int:pk>/',
-        StudentDetailView.as_view(),
-        name='print_student'
+        'print_course/<int:pk>/',
+        course_detail_view,
+        name='print_course'
     ),
     path(
         'update_student/<int:pk>/',

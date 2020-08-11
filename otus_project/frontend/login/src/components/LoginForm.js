@@ -1,20 +1,22 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from 'react-cookie';
 import axios from 'axios';
-import Students from './Students'
+
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+    const { cookies } = props;
     this.state = {
                   login: '',
                   password: '',
                   token :'',
-                  students:''
+                  students:'',
+                  token: cookies.get('token')
                 }
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.showWithToken = this.showWithToken.bind(this);
     this.login = this.login.bind(this);
   }
 
@@ -27,39 +29,24 @@ class LoginForm extends React.Component {
 
   login() {
     event.preventDefault();
-    let url = 'http://127.0.0.1:8000/api-token/token/';
-    let data = {
+    const redirect_url = window.location.origin + '/all_courses/';
+    const url = 'http://127.0.0.1:8000/api-token/token/';
+    const data = {
         username: this.state.login,
         password: this.state.password
       }
 
     axios.post(url, data)
       .then(res => {
-        this.setState({token: res.data.token, login:'', password: ''})
-        this.showWithToken()
+        const { cookies } = this.props;
+        cookies.set('token', res.data.token, { path: '/' });
+        this.setState({token: res.data.token, login:'', password: ''});
+        window.location.href = redirect_url;
       })
       .catch(err => {
           alert('Login failed')
         }
       );
-  }
-
-  showWithToken(){
-    event.preventDefault();
-    let url = 'http://127.0.0.1:8000/api-token/user_student/';
-    let data = {
-          headers: { Authorization: `Token ${this.state.token}` }
-      }
-
-    axios.get(url, data)
-      .then(res => {
-        this.setState({students: res.data})
-      })
-      .catch(err => {
-          console.log(err)
-        }
-      );
-
   }
 
   render() {
@@ -77,15 +64,18 @@ class LoginForm extends React.Component {
         </form>
         )
 
-        let students = this.state.students
+        let courses = this.state.courses
 
     return (
           <div className="mx-auto mt-4 text-center p-5">
-            {!students && courseDetails}
-            {students ? students.map(stud => <Students name={stud.first_name} email={stud.email} key={stud.id}/>) : <div>Please log in</div>}
+            {courseDetails}
           </div>
         );
       }
 }
 
-export default LoginForm;
+  LoginForm.propTypes = {
+    cookies: instanceOf(Cookies)
+  };
+
+export default withCookies(LoginForm);

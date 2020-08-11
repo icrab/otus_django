@@ -2,7 +2,7 @@ from faker import Faker
 from django.core.management import BaseCommand
 import factory
 from factory.django import DjangoModelFactory
-from myblog.models import Course, Teacher, Student, Lesson
+from myblog.models import Course, Lesson, User
 
 fake = Faker()
 
@@ -25,22 +25,25 @@ class CourseFactory(DjangoModelFactory):
 
 
 class UserFactory(DjangoModelFactory):
-    first_name = factory.Faker('first_name')
-    last_name = factory.Faker('last_name')
+    username = factory.Faker('name')
+    password = factory.Faker('password')
     email = factory.Faker('email')
-    city = factory.Faker('city')
+    group = factory.Faker(
+        'random_int',
+        min=0,
+        max=1,
+    )
 
-    course = factory.SubFactory(CourseFactory)
-
-
-class TeacherFactory(UserFactory):
     class Meta:
-        model = Teacher
+        model = User
 
+    @factory.post_generation
+    def courses(self, create, extracted, **kwargs):
+        if not create:
+            return
 
-class StudentFactory(UserFactory):
-    class Meta:
-        model = Student
+        for _ in range(3):
+            self.courses.add(CourseFactory())
 
 
 class LessonFactory(DjangoModelFactory):
@@ -61,25 +64,15 @@ class LessonFactory(DjangoModelFactory):
         end_date='-1d',
     )
 
-    teacher = factory.SubFactory(TeacherFactory)
-    course = factory.SubFactory(CourseFactory)
-
 
 def create_all():
-    courses = CourseFactory.create_batch(3)
+    courses = CourseFactory.create_batch(9)
     all_courses = Course.objects.all()
+
     courses_iterator = factory.Iterator(all_courses)
 
-    teachers = TeacherFactory.create_batch(7, course=courses_iterator)
-    students = StudentFactory.create_batch(7, course=courses_iterator)
-
-    all_teachers = Teacher.objects.all()
-    teachers_iterator = factory.Iterator(all_teachers)
-    lessons = LessonFactory.create_batch(
-                                        7,
-                                        course=courses_iterator,
-                                        teacher=teachers_iterator
-    )
+    lessons = LessonFactory.create_batch(9, course=courses_iterator)
+    users = UserFactory.create_batch(9)
 
 
 class Command(BaseCommand):
