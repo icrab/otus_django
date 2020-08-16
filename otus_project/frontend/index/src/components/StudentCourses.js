@@ -2,6 +2,7 @@ import React from "react";
 import axios from 'axios';
 import Course from "./Course"
 import { Redirect } from 'react-router-dom';
+import { connect } from "react-redux";
 
 class StudentCourses extends React.Component {
   constructor(props) {
@@ -41,4 +42,11 @@ class StudentCourses extends React.Component {
   }
 }
 
-export default StudentCourses;
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+    token: state.auth.token
+  };
+};
+
+export default connect(mapStateToProps)(StudentCourses);

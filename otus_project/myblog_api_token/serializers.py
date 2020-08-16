@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from myblog.models import Course, Lesson, User
-from django.db import models
+from rest_framework.validators import UniqueValidator
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.hashers import make_password
+
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -18,6 +21,13 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = 'id', 'title', 'cost', 'lessons'
 
 
+class TokenSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Token
+        fields = 'key'
+
+
 class UserSerializer(serializers.ModelSerializer):
     courses = CourseSerializer(many=True, read_only=True)
 
@@ -28,30 +38,27 @@ class UserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True},
         }
 
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+
 
 class UserRegistrationSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    email = serializers.EmailField()
-    password = serializers.CharField()
-    confirm_password = serializers.CharField()
+    username = serializers.CharField(
+                      required=True,
+                      validators=(UniqueValidator(queryset=User.objects.all()), )
+                      )
+    email = serializers.EmailField(
+                      required=True,
+                      validators=(UniqueValidator(queryset=User.objects.all()), )
+                      )
+    password = serializers.CharField(min_length=4)
+    confirm_password = serializers.CharField(min_length=4)
 
-    def validate_email(self, email):
-        existing = User.objects.filter(email=email).first()
-        if existing:
-            raise serializers.ValidationError("Someone with that email "
-                "address has already registered. Was it you?")
 
-        return email
-
-    def validate(self, data):
-        if not data.get('password') or not data.get('confirm_password'):
-            raise serializers.ValidationError("Please enter a password and "
-                "confirm it.")
-
-        if data.get('password') != data.get('confirm_password'):
-            raise serializers.ValidationError("Those passwords don't match.")
-
-        return data
 
 
 

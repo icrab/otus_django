@@ -12,7 +12,8 @@ from .serializers import (
                           UserSerializer,
                           CourseSerializer,
                           LessonSerializer,
-                          UserRegistrationSerializer
+                          UserRegistrationSerializer,
+                          TokenSerializer
                         )
 
 
@@ -43,11 +44,17 @@ class UserCreate(APIView):
         serializer = UserRegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        model_serializer = UserSerializer(data=serializer.data)
-        model_serializer.is_valid(raise_exception=True)
-        model_serializer.save()
+        user_serializer = UserSerializer(data=serializer.data)
+        user_serializer.is_valid(raise_exception=True)
+        user_serializer.save()
 
-        return Response(model_serializer.data)
+        user_id = user_serializer.data['id']
+        token = Token.objects.create(user_id=user_id)
+        token.save()
+
+        return Response({
+            'token': token.key,
+        })
 
 
 class SignUpOnCourse(APIView):

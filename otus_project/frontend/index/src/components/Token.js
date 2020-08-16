@@ -1,7 +1,5 @@
 import React from "react";
 import { Redirect } from 'react-router-dom';
-import { instanceOf } from 'prop-types';
-import { withCookies, Cookies } from 'react-cookie';
 import {axiosGet, axiosPost} from "../utils/API.js";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -18,8 +16,6 @@ class Token extends React.Component {
      const data = {}
      const headers = { headers: { 'Authorization': `Token ${this.props.token}` } }
      const then_handler = ( response => {
-          const { cookies } = this.props;
-          cookies.set('token', response.data.token, { path: '/' });
           logIn(response.data.token)
        })
      const catch_handler = ( err => {
@@ -50,10 +46,6 @@ class Token extends React.Component {
       }
 }
 
-  Token.propTypes = {
-    cookies: instanceOf(Cookies)
-  };
-
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.isAuthenticated,
@@ -67,4 +59,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withCookies(connect(mapStateToProps, mapDispatchToProps)(Token));
+export default connect(mapStateToProps, mapDispatchToProps)(Token);

@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { axiosGet } from "../utils/API.js"
 import { NavLink }  from 'react-router-dom'
+import { connect } from "react-redux";
 
 class Course extends React.Component {
   constructor(props) {
@@ -50,4 +51,12 @@ class Course extends React.Component {
   }
 }
 
-export default Course;
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+    token: state.auth.token
+  };
+};
+
+
+export default connect(mapStateToProps)(Course);

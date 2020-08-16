@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { bindActionCreators } from "redux";
 import { logOut } from '../actions/auth'
-import { Cookies, withCookies } from 'react-cookie';
-import { instanceOf } from 'prop-types';
 
 class Header extends React.Component {
     constructor(props) {
@@ -21,18 +19,9 @@ class Header extends React.Component {
           Authorization: `Token ${this.props.token}`
         }
       }
-      const { cookies } = this.props;
       const logOut = this.props.logOut;
-
       let res = await axios.post(url, data, headers)
-
       logOut(null)
-      cookies.remove('token', { path: '/' });
-      this.setState({
-        appLoaded: true,
-        isAuthenticated: false,
-        token: null
-      })
     }
   render(){
     if (this.props.isAuthenticated){
@@ -43,7 +32,6 @@ class Header extends React.Component {
               <li><NavLink activeClassName="selected" to='/'>Home</NavLink></li>
               <li><NavLink activeClassName="selected" to='/token'>Token</NavLink></li>
               <li><NavLink activeClassName="selected" to='/my_courses'>My courses</NavLink></li>
-              <li><NavLink activeClassName="selected" to='/login'>Login</NavLink></li>
             </ul>
           </nav>
           <button className="btn btn-primary" onClick={this.logout}>Log out</button>
@@ -56,6 +44,7 @@ class Header extends React.Component {
             <ul>
               <li><NavLink activeClassName="selected" to='/'>Home</NavLink></li>
               <li><NavLink activeClassName="selected" to='/login'>Login</NavLink></li>
+              <li><NavLink activeClassName="selected" to='/register'>Register</NavLink></li>
             </ul>
           </nav>
         </header>
@@ -77,8 +66,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-  Header.propTypes = {
-    cookies: instanceOf(Cookies)
-  }
 
-export default withCookies(connect(mapStateToProps, mapDispatchToProps)(Header));
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

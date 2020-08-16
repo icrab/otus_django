@@ -3,6 +3,7 @@ import { NavLink }  from 'react-router-dom'
 import {axiosGet, axiosPost} from "../utils/API.js";
 import { Redirect } from 'react-router-dom';
 import Lesson from './Lesson.js';
+import { connect } from "react-redux";
 
 class DetailCourse extends React.Component {
     constructor(props) {
@@ -10,7 +11,6 @@ class DetailCourse extends React.Component {
       this.state = ({
         course: false,
       })
-      console.log(this.props)
       this.SignUpOnCourse = this.SignUpOnCourse.bind(this);
     }
 
@@ -93,4 +93,13 @@ class DetailCourse extends React.Component {
    }
 }
 
-export default DetailCourse;
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+    token: state.auth.token
+  };
+};
+
+
+
+export default connect(mapStateToProps)(DetailCourse);
