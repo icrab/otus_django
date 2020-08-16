@@ -18,8 +18,8 @@ def login(request):
     return render(request, 'myblog/login.html')
 
 
-def auth(request):
-    return render(request, 'myblog/auth.html')
+def account(request):
+    return render(request, 'myblog/index.html')
 
 
 class AllCourses(ListView):

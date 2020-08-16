@@ -1,14 +1,7 @@
 from rest_framework import serializers
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from myblog.models import Course, Lesson, User
+from django.db import models
 
-
-# set students as default group
-#@receiver(post_save, sender=User)
-#def create_user_profile(sender, instance, created, **kwargs):
-#    if created:
-#        instance.groups.add(Group.objects.get(name='students'))
 
 class LessonSerializer(serializers.ModelSerializer):
 
@@ -26,20 +19,39 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    courses = CourseSerializer(many=True)
+    courses = CourseSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
         fields = 'id', 'username', 'password', 'email', 'courses'
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
 
-    def create(self, validated_data):
-        password = validated_data.pop('password')
-        user = User(**validated_data)
-        user.set_password(password)
-        user.save()
-        return user
 
+class UserRegistrationSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    email = serializers.EmailField()
+    password = serializers.CharField()
+    confirm_password = serializers.CharField()
+
+    def validate_email(self, email):
+        existing = User.objects.filter(email=email).first()
+        if existing:
+            raise serializers.ValidationError("Someone with that email "
+                "address has already registered. Was it you?")
+
+        return email
+
+    def validate(self, data):
+        if not data.get('password') or not data.get('confirm_password'):
+            raise serializers.ValidationError("Please enter a password and "
+                "confirm it.")
+
+        if data.get('password') != data.get('confirm_password'):
+            raise serializers.ValidationError("Those passwords don't match.")
+
+        return data
 
 
 

@@ -35,15 +35,18 @@ class User(AbstractUser):
 
     password = models.CharField(
         max_length=128,
-        validators=[MinLengthValidator(4)]
+        validators=(MinLengthValidator(4), )
     )
 
     email = models.EmailField(unique=True)
     group = models.PositiveSmallIntegerField(choices=GROUP, default=GROUP_STUDENT)
-    courses = models.ManyToManyField(Course, related_name='users', blank=True)
+    courses = models.ManyToManyField(Course, blank=True, related_name='users')
 
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'username'
+
+    def __str__(self):
+        return self.username
 
 
 class Lesson(models.Model):

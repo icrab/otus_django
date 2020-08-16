@@ -11,12 +11,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'oauth2_provider',
     'celery',
     'myblog',
     'myblog_celery',
     'frontend',
-    'rest_registration'
 ]
 
 MIDDLEWARE = [

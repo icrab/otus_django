@@ -2,24 +2,26 @@ from django.urls import path, include
 from rest_framework.authtoken import views
 from rest_framework.routers import DefaultRouter
 from .views import (
-                    StudentRegisteredViewSet,
-                    CourseRegisteredViewSet,
-                    TeacherGuestViewSet,
                     CourseGuestViewSet,
-                    LessonRegisteredViewSet,
                     SignUpOnCourse,
+                    StudentRegisteredCoursesViewSet,
+                    UserCreate,
+                    RefreshAuthToken,
+                    CheckAuthToken,
+                    Logout,
                    )
 
 
 router = DefaultRouter()
-router.register('course', CourseGuestViewSet, basename='course')
-router.register('teacher', TeacherGuestViewSet, basename='teacher')
-router.register('user_student', StudentRegisteredViewSet, basename='user_student')
-router.register('user_course', CourseRegisteredViewSet, basename='user_course')
-router.register('lessons', LessonRegisteredViewSet, basename='lessons')
+router.register('courses', CourseGuestViewSet, basename='courses')
 
 urlpatterns = [
     path('', include(router.urls)),
     path('token/', views.obtain_auth_token),
-    path('sign_up_on_course/', SignUpOnCourse.as_view())
+    path('sign_up_on_course/', SignUpOnCourse.as_view()),
+    path('user_courses/', StudentRegisteredCoursesViewSet.as_view()),
+    path('refresh_auth_token/', RefreshAuthToken.as_view()),
+    path('check_auth_token/', CheckAuthToken.as_view()),
+    path('register/', UserCreate.as_view()),
+    path('logout/', Logout.as_view()),
 ]
